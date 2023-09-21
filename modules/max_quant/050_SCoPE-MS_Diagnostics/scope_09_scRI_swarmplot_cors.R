@@ -7,6 +7,7 @@ init <- function() {
   
   .validate <- function(data, input) {
     validate(need(data()[['evidence']], paste0('Upload evidence.txt')))
+    validate(need(TRUE==FALSE), paste0('This is a temporary fix as this plot stops "Generate Report"'))
   }
   
   .plotdata <- function(data, input) {
