@@ -342,7 +342,8 @@ shinyServer(function(input, output, session) {
                         stringsAsFactors=FALSE)
           # rename value column to folder name as well
           if(folder$Folder.Name =="txt"){
-            split_string =str_split(folder$Path,"\\\\|/")[[1]]
+            split_path =str_split(folder$Path,"\\\\|/")[[1]]
+            colnames(.dat)[2] <- split_path[length(split_path)-2]
           }else{
           colnames(.dat)[2] <- folder$Folder.Name
           }
@@ -370,7 +371,12 @@ shinyServer(function(input, output, session) {
             showNotification(paste0(length(diff_rows), ' parameters in file \"', file$name, '\" are exclusive to some analyses but not others. Eliminating the different parameters'), type='warning')
             print(paste0(length(diff_rows), ' parameters in file ', file$name, ' are exclusive to some analyses but not others. Eliminating the different parameters: ', paste(diff_rows, collapse=', ')))
           }
-          
+          if(folder$Folder.Name=="txt"){
+            split_path =str_split(folder$Path,"\\\\|/")[[1]]
+            folder_name <- split_path[length(split_path)-2]
+          }else{
+            folder_name = folder$Folder.Name
+          }
           .data[[file$name]] <- cbind(
             # original
             .data[[file$name]] %>% 
@@ -382,7 +388,7 @@ shinyServer(function(input, output, session) {
               dplyr::pull()
           )
           # rename column to folder name
-          colnames(.data[[file$name]])[ncol(.data[[file$name]])] <- folder$Folder.Name
+          colnames(.data[[file$name]])[ncol(.data[[file$name]])] <- folder_name
         }
         # otherwise, append to existing data.frame
         else {
