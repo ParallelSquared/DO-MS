@@ -341,7 +341,11 @@ shinyServer(function(input, output, session) {
           .dat <- rbind(c('Folder Name', folder$Folder.Name), c('Folder Path', folder$Path), .dat, 
                         stringsAsFactors=FALSE)
           # rename value column to folder name as well
+          if(folder$Folder.Name =="txt"){
+            split_string =str_split(folder$Path,"\\\\|/")[[1]]
+          }else{
           colnames(.dat)[2] <- folder$Folder.Name
+          }
         } else {
           # store folder name and path
           .dat$Folder.Name <- folder$Folder.Name
